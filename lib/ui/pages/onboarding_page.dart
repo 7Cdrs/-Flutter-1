@@ -10,6 +10,19 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
+  int currentIndex = 0;
+  CarouselController carouselController = CarouselController();
+  List<String> titles = [
+    'Grow your\nFinancial Today',
+    'Build From\nZero to freedom',
+    'Start Together',
+  ];
+  List<String> subtitles = [
+    'Our system is helping you to\nachieve a better goal',
+    'We provide tips for you so that\nyou can adapt easier',
+    'We will guide you to where\nyou wanted it too',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +50,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 height: 331, // Adjust as per your design
                 viewportFraction: 1,
                 enableInfiniteScroll: false,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
 
               ),
+              carouselController: carouselController,
             ),
             const SizedBox(
               height: 80
@@ -56,7 +75,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(children: [
-                Text('Grow Your\nFinancial Today',
+                Text(
+                titles[currentIndex],
                 style: blackTextStyle.copyWith(
                   fontSize: 20,
                   fontWeight: semiBold,
@@ -67,15 +87,65 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   height: 26,
                 ),
                 Text(
-                  'Our system is helping you to\nachieve a better goal ',
+                  subtitles[currentIndex],
                   style: greyTextStyle.copyWith(
                     fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 50,
+                 SizedBox(
+                  height: currentIndex == 2 ? 38 : 50,
                 ),
+                currentIndex == 2 ?
+                Column(
+                  children: [
+                    SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () {
+                        carouselController.nextPage();
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: purpleColor, // Make sure the theme variable name is correct
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(56),
+                        ),
+                      ),
+                      child: Text(
+                        'Get Started',
+                        style: whiteTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: semiBold,
+                        ),
+                      ),
+                    ),
+
+                   ),
+                   const SizedBox(
+                      height: 20,
+                  ),
+                    SizedBox(
+                    width: double.infinity,
+                    height: 24,
+                    child: TextButton(
+                      onPressed: () {
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Text(
+                        'Sign In',
+                        style: greyTextStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+
+                   ),
+
+                  ],
+                ) :
                 Row(
                   children: [
                     Container(
@@ -85,7 +155,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         right: 10
                         ),
                       decoration: BoxDecoration(
-                        color: blueColor, // Make sure the theme variable name is correct
+                        color: currentIndex==0 ? blueColor : lightBakcgroundColor, // Make sure the theme variable name is correct
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -96,7 +166,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         right: 10
                         ),
                       decoration: BoxDecoration(
-                        color: lightBakcgroundColor, // Make sure the theme variable name is correct
+                        color: currentIndex==1 ? blueColor : lightBakcgroundColor, // Make sure the theme variable name is correct
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -107,16 +177,18 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         right: 10
                         ),
                       decoration: BoxDecoration(
-                        color: lightBakcgroundColor, // Make sure the theme variable name is correct
+                        color: currentIndex==2 ? blueColor : lightBakcgroundColor, // Make sure the theme variable name is correct
                         shape: BoxShape.circle,
                       ),
                     ),
                    const Spacer(),
-                   Container(
+                   SizedBox(
                     width: 150,
                     height: 50,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        carouselController.nextPage();
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: purpleColor, // Make sure the theme variable name is correct
                         shape: RoundedRectangleBorder(
@@ -132,7 +204,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ),
                     ),
 
-                   )
+                   ),
                   ],
                 )
               ],),
